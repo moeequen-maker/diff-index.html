@@ -1,0 +1,1091 @@
+
+                
+      
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SocialRework – Offer Deck (Holographic 3D)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-alt: #020617;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent1: #22d3ee;
+      --accent2: #a855f7;
+      --accent3: #f97316;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --border: rgba(148, 163, 184, 0.4);
+      --radius-xl: 24px;
+      --shadow-holo: 0 0 30px rgba(56, 189, 248, 0.45),
+                     0 0 60px rgba(129, 140, 248, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        sans-serif;
+      background: radial-gradient(circle at 10% 0,
+          rgba(56, 189, 248, 0.35),
+          transparent 55%)
+        no-repeat,
+        radial-gradient(circle at 90% 100%,
+          rgba(168, 85, 247, 0.35),
+          transparent 55%)
+        no-repeat,
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      scroll-behavior: smooth;
+    }
+
+    /* SIDEBAR NAVIGATION */
+
+    .sidebar {
+      width: 260px;
+      padding: 24px 20px;
+      border-right: 1px solid rgba(148, 163, 184, 0.25);
+      backdrop-filter: blur(26px);
+      background: linear-gradient(
+          180deg,
+          rgba(15, 23, 42, 0.9),
+          rgba(15, 23, 42, 0.5)
+        );
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .logo-block {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 180deg,
+        var(--accent1),
+        var(--accent2),
+        var(--accent3),
+        var(--accent1)
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0f172a;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 0 22px rgba(59, 130, 246, 0.7);
+    }
+
+    .logo-text-main {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .logo-text-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .sidebar-section-title {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-item {
+      list-style: none;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: all 0.2s ease-out;
+      cursor: pointer;
+    }
+
+    .nav-link span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-pill {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: radial-gradient(circle, var(--accent1), var(--accent2));
+      box-shadow: 0 0 10px rgba(45, 212, 191, 0.9);
+    }
+
+    .nav-link small {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      color: var(--muted);
+    }
+
+    .nav-link:hover {
+      border-color: rgba(148, 163, 184, 0.7);
+      color: var(--text);
+      background: radial-gradient(circle at 0 0,
+          rgba(45, 212, 191, 0.2),
+          transparent 60%);
+    }
+
+    .nav-link.active {
+      border-color: rgba(59, 130, 246, 0.9);
+      background: radial-gradient(circle at 0 0,
+          rgba(56, 189, 248, 0.25),
+          transparent 60%);
+      color: #e5e7eb;
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.5);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.8;
+    }
+
+    /* MAIN PRESENTATION AREA */
+
+    .main {
+      margin-left: 260px;
+      padding: 32px 40px 80px;
+      width: calc(100% - 260px);
+    }
+
+    .timeline-label {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .deck-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .deck-sub {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 680px;
+      margin-bottom: 24px;
+    }
+
+    .slide-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
+      margin-top: 16px;
+    }
+
+    .slide {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .slide-inner {
+      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.2fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 960px) {
+      .sidebar {
+        display: none;
+      }
+      .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px 16px 40px;
+      }
+      .slide-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .slide {
+        min-height: auto;
+        padding: 40px 0;
+      }
+    }
+
+    /* HOLOGRAPHIC 3D CARD */
+
+    .holo-shell {
+      position: relative;
+      perspective: 1400px;
+      transform-style: preserve-3d;
+    }
+
+    .holo-card {
+      border-radius: var(--radius-xl);
+      background: linear-gradient(
+          135deg,
+          rgba(15, 23, 42, 0.95),
+          rgba(15, 23, 42, 0.85)
+        );
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-holo);
+      padding: 26px 26px 24px;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform 0.4s ease, box-shadow 0.4s ease,
+        border-color 0.4s ease;
+    }
+
+    .holo-shell:hover .holo-card {
+      transform: rotateY(10deg) rotateX(-6deg) translateY(-4px);
+      border-color: rgba(56, 189, 248, 0.8);
+      box-shadow: 0 0 60px rgba(59, 130, 246, 0.8),
+        0 0 100px rgba(96, 165, 250, 0.5);
+    }
+
+    .holo-glow,
+    .holo-orb,
+    .holo-scanline {
+      position: absolute;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .holo-glow {
+      inset: -40%;
+      background: radial-gradient(circle at 0 0,
+          rgba(45, 212, 191, 0.32),
+          transparent 55%),
+        radial-gradient(circle at 100% 100%,
+          rgba(129, 140, 248, 0.28),
+          transparent 60%);
+      opacity: 0.8;
+      transform: translateZ(-80px);
+    }
+
+    .holo-orb {
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 130deg,
+        rgba(45, 212, 191, 0.9),
+        rgba(129, 140, 248, 0.9),
+        rgba(248, 250, 252, 0.9),
+        rgba(45, 212, 191, 0.9)
+      );
+      filter: blur(30px);
+      right: -80px;
+      top: -80px;
+      opacity: 0.6;
+      transform: translateZ(-40px);
+    }
+
+    .holo-scanline {
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(148, 163, 184, 0.12) 0,
+        rgba(148, 163, 184, 0.12) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      mix-blend-mode: soft-light;
+      opacity: 0.35;
+      transform: translateZ(40px);
+    }
+
+    .card-header {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .tier-label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .tier-name {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .tier-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0 0,
+          rgba(45, 212, 191, 0.45),
+          transparent 60%);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 11px;
+      color: #e5e7eb;
+      white-space: nowrap;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .price-main {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .price-setup {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 440px;
+    }
+
+    .tag-row {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--muted);
+    }
+
+    .body-grid {
+      position: relative;
+      z-index: 2;
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.2fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 960px) {
+      .body-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .section-block {
+      background: radial-gradient(circle at 0 0,
+          rgba(15, 23, 42, 0.9),
+          rgba(15, 23, 42, 0.85));
+      border-radius: 18px;
+      padding: 14px 16px 14px;
+      border: 1px solid rgba(51, 65, 85, 0.85);
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.9);
+    }
+
+    .section-title {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .section-main {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .mini {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .bullet-list {
+      list-style: none;
+      display: grid;
+      gap: 4px;
+      font-size: 13px;
+    }
+
+    .bullet-list li::before {
+      content: "•";
+      margin-right: 6px;
+      color: var(--accent1);
+    }
+
+    /* FUNNEL DIAGRAMS */
+
+    .funnel {
+      margin-top: 10px;
+      display: grid;
+      gap: 4px;
+      font-size: 12px;
+    }
+
+    .funnel-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .funnel-stage {
+      flex: 1;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background: radial-gradient(circle at 0 0,
+          rgba(56, 189, 248, 0.14),
+          transparent 60%);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      min-width: 120px;
+      text-align: center;
+    }
+
+    .arrow {
+      font-size: 15px;
+      color: rgba(148, 163, 184, 0.9);
+    }
+
+    /* RIGHT COLUMN CARDS */
+
+    .stat-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .stat-card {
+      padding: 10px 13px;
+      border-radius: 16px;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      background: linear-gradient(
+        145deg,
+        rgba(15, 23, 42, 0.95),
+        rgba(15, 23, 42, 0.75)
+      );
+      font-size: 12px;
+    }
+
+    .stat-label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+
+    .stat-main {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .highlight {
+      color: var(--accent1);
+    }
+
+    .highlight-2 {
+      color: var(--accent2);
+    }
+
+    .highlight-3 {
+      color: var(--accent3);
+    }
+  </style>
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo-block">
+      <div class="logo-mark">SR</div>
+      <div class="logo-text-main">SocialRework</div>
+      <div class="logo-text-sub">AI Growth & Monetization Systems</div>
+    </div>
+
+    <div>
+      <div class="sidebar-section-title">Offer Deck</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#tier1" class="nav-link active">
+            <span>
+              <span class="nav-pill"></span>
+              Tier 1 · Growth Engine
+            </span>
+            <small>$3.5K / mo</small>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#tier2" class="nav-link">
+            <span>
+              <span class="nav-pill"></span>
+              Tier 2 · Client Machine
+            </span>
+            <small>$5K / mo</small>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#tier3" class="nav-link">
+            <span>
+              <span class="nav-pill"></span>
+              Tier 3 · Business Takeover
+            </span>
+            <small>$8–10K / mo</small>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-footer">
+      3-tier stack for serious coaches, creators & personal brands.<br>
+      Built around one outcome: convert content into clients.
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <div class="timeline-label">Offer Presentation • 2025</div>
+    <div class="deck-title">SocialRework Monetization Stack</div>
+    <div class="deck-sub">
+      Three layers of service built for creators & coaches who are done playing
+      with views and want a predictable system for <span class="highlight">booked
+      calls, clients and revenue</span>. Each tier adds more infrastructure.
+    </div>
+
+    <div class="slide-grid">
+      <!-- TIER 1 SLIDE -->
+      <section id="tier1" class="slide">
+        <div class="slide-inner">
+          <div class="holo-shell">
+            <div class="holo-card">
+              <div class="holo-glow"></div>
+              <div class="holo-orb"></div>
+              <div class="holo-scanline"></div>
+
+              <header class="card-header">
+                <div>
+                  <div class="tier-label">Tier 1 · Foundation Layer</div>
+                  <div class="tier-name">Growth Engine – Daily Authority & Reach</div>
+                </div>
+                <div class="tier-pill">For 1K–20K followers / early-stage coaches</div>
+              </header>
+
+              <div class="price-row">
+                <div class="price-main">$3,500<span style="font-size:14px;font-weight:500;">/month</span></div>
+                <div class="price-setup">+ $1,000 one-time system setup</div>
+              </div>
+              <p class="subtitle">
+                We turn one weekly long-form recording into a holographic content
+                system: daily short-form, distribution across 6–7 accounts, and
+                light DM warm-up so your name is everywhere in your niche.
+              </p>
+
+              <div class="tag-row">
+                <span class="tag">Visibility Engine</span>
+                <span class="tag">Authority Positioning</span>
+                <span class="tag">Audience Building</span>
+                <span class="tag">Repurposing Studio</span>
+              </div>
+
+              <div class="body-grid">
+                <!-- Left Section -->
+                <div class="section-block">
+                  <div class="section-title">What We Deploy</div>
+                  <div class="section-main">Content System + Organic Growth Layer</div>
+                  <div class="mini">From one long-form recording → dozens of shots
+                    across platforms with your brand framed as “the obvious expert”.</div>
+
+                  <ul class="bullet-list">
+                    <li>12–16 short-form clips per week (Reels, Shorts, TikTok).</li>
+                    <li>SEO-optimized titles, hooks, captions & 3 thumbnail variants.</li>
+                    <li>Daily posting to: main account + up to 5 sub-accounts.</li>
+                    <li>Theme-page placement 2× per week to tap new audiences.</li>
+                    <li>Niche research, topic mapping & weekly content roadmap.</li>
+                    <li>Light DM warm-up (~15/day): replies, comment-to-DM, soft intros.</li>
+                    <li>Weekly analytics + “what to film next” feedback loop.</li>
+                  </ul>
+
+                  <div class="funnel">
+                    <div class="section-title" style="margin-top:4px;">Growth Funnel</div>
+                    <div class="funnel-row">
+                      <div class="funnel-stage">Long-form recording</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">Short-form clips</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">Multi-account posting</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">Warm audience</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right Section -->
+                <div class="stat-stack">
+                  <div class="stat-card">
+                    <div class="stat-label">Primary Outcome</div>
+                    <div class="stat-main">
+                      Turn “I post sometimes” into a <span class="highlight">consistent daily
+                      presence</span>.
+                    </div>
+                    <div class="mini">
+                      Ideal for creators who know they should be visible every day but
+                      don’t want to manage editors, posting schedules and analytics.
+                    </div>
+                  </div>
+
+                  <div class="stat-card">
+                    <div class="stat-label">Who It’s For</div>
+                    <div class="mini">
+                      • Creators sitting between 1K–20K followers<br>
+                      • Early-stage coaches who need attention first<br>
+                      • People who suck at consistency but are good on camera
+                    </div>
+                  </div>
+
+                  <div class="stat-card">
+                    <div class="stat-label">How It Feels</div>
+                    <div class="mini">
+                      You record once a week. We do the rest. Your audience starts
+                      seeing you every day and saying: <span class="highlight-2">“You’re
+                      everywhere all of a sudden.”</span>
+                    </div>
+                  </div>
+
+                  <div class="stat-card">
+                    <div class="stat-label">Feeds Tier 2</div>
+                    <div class="mini">
+                      This layer builds the warm audience that Tier 2 converts into
+                      <span class="highlight-3">booked calls & clients.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SIDE PANEL  -->
+          <div class="stat-stack">
+            <div class="stat-card">
+              <div class="stat-label">Slide 1 / 3</div>
+              <div class="stat-main">Foundation: Attention & Authority</div>
+              <div class="mini">
+               Tier 1 is built on the foundational reality of the modern creator economy: attention is the single most valuable asset you can own, and authority is what converts that attention into income. Most creators struggle not because they lack skill or value, but because they lack consistent, daily, high-quality visibility. When your audience sees you every day across multiple platforms, you naturally become the person they trust, listen to, and eventually buy from.
+
+The Growth Engine solves this by installing a full content production system around you. You simply record once per week; our team transforms that into an entire ecosystem of content — 12 to 16 clips engineered with viral retention techniques, optimized hooks, subtitles, emotional pacing, and niche relevance. Then we distribute this content across your main page, multiple sub-accounts, and theme pages that borrow authority and accelerate reach. This creates the effect of omnipresence: you appear everywhere, all the time, without needing to grind daily.
+
+The more people see you, the more they trust you. The more they trust you, the more authority you hold. And authority is what ultimately creates client demand.
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Key Promise</div>
+              <div class="mini">
+                he promise of Tier 1 is the creation of constant, predictable attention that compounds into influence. Your content begins to position you as “the person to listen to” in your niche, even if you’re starting small. Your DMs warm up. Your comments increase. People remember your face, your message, your expertise. You start gaining followers who actually care about what you say — not low-quality numbers, but real potential buyers.
+
+This tier is designed to lay the strategic foundation for everything else: once you have consistent authority and audience trust, converting viewers into coaching clients, program buyers, or customers becomes dramatically easier. Tier 1 is not a revenue system — it is the soil where all future revenue grows. Those who skip this stage always pay for it later through low conversions, inconsistent growth, and constant reinvention. Tier 1 ensures your brand becomes a magnet for long-term opportunity.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TIER 2 SLIDE -->
+      <section id="tier2" class="slide">
+        <div class="slide-inner">
+          <div class="holo-shell">
+            <div class="holo-card">
+              <div class="holo-glow"></div>
+              <div class="holo-orb"></div>
+              <div class="holo-scanline"></div>
+
+              <header class="card-header">
+                <div>
+                  <div class="tier-label">Tier 2 · Revenue Layer</div>
+                  <div class="tier-name">Client Machine – Content → Calls → Clients</div>
+                </div>
+                <div class="tier-pill">For 5–30K/mo coaches & serious creators</div>
+              </header>
+
+              <div class="price-row">
+                <div class="price-main">$5,000<span style="font-size:14px;font-weight:500;">/month</span></div>
+                <div class="price-setup">+ $2,000 funnel & system buildout</div>
+              </div>
+              <p class="subtitle">
+                Everything from Tier 1, plus a full client-acquisition infrastructure:
+                funnels, automated DMs, community monetization and weekly sales support.
+                The goal is simple: <span class="highlight">predictable booked calls and new
+                clients every month.</span>
+              </p>
+
+              <div class="tag-row">
+                <span class="tag">Full Funnel Build</span>
+                <span class="tag">DM Client Engine</span>
+                <span class="tag">Community Monetization</span>
+                <span class="tag">Sales Support</span>
+              </div>
+
+              <div class="body-grid">
+                <!-- Left -->
+                <div class="section-block">
+                  <div class="section-title">What We Deploy</div>
+                  <div class="section-main">Lead Gen & Conversion Layer</div>
+                  <div class="mini">
+                    We bolt a complete acquisition system behind your content so your
+                    attention turns into leads, calls and revenue.
+                  </div>
+                  <ul class="bullet-list">
+                    <li>Conversion-optimized VSL page, booking page & lead magnet funnel.</li>
+                    <li>Full value ladder: free → low-ticket → core offer → high-ticket.</li>
+                    <li>Calendar integration + automated confirmation & reminder flows.</li>
+                    <li>40–80 targeted DMs per day across 6 sub-accounts.</li>
+                    <li>Interest → VSL → call routing using proven DM scripts.</li>
+                    <li>Telegram/Discord community build with monetization paths.</li>
+                    <li>Weekly sales support: objection scripts, call audits, follow-up flows.</li>
+                    <li>20–30 clips/week, daily posting across 7 accounts, plus theme pages.</li>
+                  </ul>
+
+                  <!-- Funnel diagram for Tier 2 -->
+                  <div class="funnel">
+                    <div class="section-title" style="margin-top:4px;">Client Machine Funnel</div>
+                    <div class="funnel-row">
+                      <div class="funnel-stage">Content & clips</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">DM conversations</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">VSL & lead magnet</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">Booking page</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">Sales calls</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">Clients</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right -->
+                <div class="stat-stack">
+                  <div class="stat-card">
+                    <div class="stat-label">Primary Outcome</div>
+                    <div class="stat-main">
+                      Build a <span class="highlight">predictable pipeline</span> of
+                      qualified calls each month.
+                    </div>
+                    <div class="mini">
+                      Your content is no longer “for brand” only — it becomes the first
+                      step of a tightly tracked client acquisition system.
+                    </div>
+                  </div>
+
+                  <div class="stat-card">
+                    <div class="stat-label">Who It’s For</div>
+                    <div class="mini">
+                      • Coaches already making $5K–$30K/month<br>
+                      • Creators who want their DMs full of qualified leads<br>
+                      • Course creators & personal brands ready to scale revenue
+                    </div>
+                  </div>
+
+                  <div class="stat-card">
+                    <div class="stat-label">Sales Support Layer</div>
+                    <div class="mini">
+                      We don’t just send you calls. We help you <span class="highlight-2">
+                      close them</span>: call reviews, objection scripting, DM follow-up,
+                      offer refinement and pipeline tracking.
+                    </div>
+                  </div>
+
+                  <div class="stat-card">
+                    <div class="stat-label">Client Machine Promise</div>
+                    <div class="mini">
+                      In 90 days, our target is that you can look at a dashboard and know:
+                      “If I post this much and send this many DMs, I’ll book <span
+                        class="highlight-3">X calls and sign Y clients.</span>”
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right meta panel -->
+          <div class="stat-stack">
+            <div class="stat-card">
+              <div class="stat-label">Slide 2 / 3</div>
+              <div class="stat-main">Middle Tier: The Money Maker</div>
+              <div class="mini">
+                This is designed to be your main tier: most creators and coaches will
+                comfortably sit here. It stacks everything from Tier 1 but orients
+                all activity around <span class="highlight">“more clients in, every month.”</span>.Tier 2 is built on one objective: turn your growing audience into consistent, qualified paying clients. If Tier 1 is about attention, Tier 2 is about creating the pathway that takes those viewers from “interested” to “ready to buy.” This requires positioning, education, trust-building, qualification, and systematic nurturing  all of which we engineer for you.
+
+We build your complete acquisition ecosystem: a high-converting VSL, a booking funnel, authority-driven value stack pages, opt-in funnels, a lead magnet that elevates your expertise, automated email/SMS sequences, and a structured community environment. Instead of content floating around with no purpose, every piece now directs attention into your funnel, educates prospects, builds belief, removes objections, and prepares them for a call.
+
+Complexity becomes simple. Traffic becomes leads. Leads become booked calls. Booked calls become clients.
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Offer Angle vs. Platforms</div>
+              <div class="mini">
+                Platforms like Whop give you tools and pay-per-view campaigns.<br>
+                SocialRework Tier 2 gives you a <span class="highlight-2">done-for-you
+                acquisition system</span> that lands calls & clients, not just views.The Tier 2 promise is clear: a reliable, predictable client acquisition machine that generates booked calls every week without you doing any manual work. Our DM systems run 40–80 targeted outreach conversations per day from multiple accounts, drive prospects into your VSL, qualify them automatically, and book them directly onto your calendar.
+
+Your content continues to grow your authority, but now it’s backed by a full sales infrastructure that turns attention into revenue. You no longer rely on luck, inconsistent inbound interest, or guessing what works. Your business becomes a pipeline with measurable numbers, predictable revenue, and repeatable growth. This is the tier where creators go from “good content” to “real cash flow.”
+
+This is the bridge from hobbyist → business owner.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TIER 3 SLIDE -->
+      <section id="tier3" class="slide">
+        <div class="slide-inner">
+          <div class="holo-shell">
+            <div class="holo-card">
+              <div class="holo-glow"></div>
+              <div class="holo-orb"></div>
+              <div class="holo-scanline"></div>
+
+              <header class="card-header">
+                <div>
+                  <div class="tier-label">Tier 3 · Full Takeover Layer</div>
+                  <div class="tier-name">Business Takeover – Creator COO</div>
+                </div>
+                <div class="tier-pill">For 20K–50K+/mo brands & 50K–500K+ creators</div>
+              </header>
+
+              <div class="price-row">
+                <div class="price-main">$8,000–$10,000<span style="font-size:14px;font-weight:500;">/month</span></div>
+                <div class="price-setup">+ $3,000 deep-dive architecture & build</div>
+              </div>
+              <p class="subtitle">
+                This is where we stop being “your agency” and become your <span
+                  class="highlight">Creator COO</span>. We architect your brand, offers,
+                content studio, sales systems, product ecosystem and team — then run
+                the machine with you.
+              </p>
+
+              <div class="tag-row">
+                <span class="tag">Personal Brand Architecture</span>
+                <span class="tag">Full Studio in a Box</span>
+                <span class="tag">Aggressive Distribution</span>
+                <span class="tag">Sales Org & Offers</span>
+              </div>
+
+              <div class="body-grid">
+                <!-- Left -->
+                <div class="section-block">
+                  <div class="section-title">What We Deploy</div>
+                  <div class="section-main">End-to-End Operator Layer</div>
+                  <div class="mini">
+                    You become the face. We become the engine. This is a full
+                    transformation from “solo creator” to “operated media company”.
+                  </div>
+
+                  <ul class="bullet-list">
+                    <li>Brand strategy: identity, positioning, content pillars, authority site.</li>
+                    <li>Offer redesign and product ecosystem: mini, core, high-ticket, community.</li>
+                    <li>Weekly long-form planning; you record, we run the entire studio pipeline.</li>
+                    <li>40–60 clips/week, multi-style, A/B tested hooks & formats.</li>
+                    <li>Distribution across main + 8–12 subs + TikTok brands + Shorts + LinkedIn + X + Pinterest + theme pages.</li>
+                    <li>Client acquisition org: 100–200 DMs/day, appointment setters, CRM, nurture flows.</li>
+                    <li>Sales infra: call booking, script optimization, dashboards, optional closer.</li>
+                    <li>Team overlay: editor, designer, account manager, strategy lead, setter.</li>
+                    <li>Monthly deep-dive scaling sessions on revenue, funnel expansion & positioning.</li>
+                  </ul>
+
+                  <!-- Funnel diagrams for the whole business -->
+                  <div class="funnel">
+                    <div class="section-title" style="margin-top:4px;">Business Funnel (Macro View)</div>
+                    <div class="funnel-row">
+                      <div class="funnel-stage">Audience & reach</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">Community & email list</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">Low-ticket buyers</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">Core program</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">High-ticket / back-end</div>
+                    </div>
+
+                    <div class="section-title" style="margin-top:8px;">Sales Funnel (Micro View)</div>
+                    <div class="funnel-row">
+                      <div class="funnel-stage">Content touch</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">DM / inbound</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">VSL + assets</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">Application</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">Sales call</div>
+                      <div class="arrow">⟶</div>
+                      <div class="funnel-stage">Client / upsell</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right -->
+                <div class="stat-stack">
+                  <div class="stat-card">
+                    <div class="stat-label">Primary Outcome</div>
+                    <div class="stat-main">
+                      Turn you from “creator with income” into a <span class="highlight">
+                      brand with a business engine.</span>
+                    </div>
+                    <div class="mini">
+                      The objective is multi–5-figure months with infrastructure that
+                      doesn’t depend on you checking everything manually.
+                    </div>
+                  </div>
+
+                  <div class="stat-card">
+                    <div class="stat-label">Who It’s For</div>
+                    <div class="mini">
+                      • Influencers with 50K–500K audience<br>
+                      • Coaches at $20K–$50K/month wanting $100K/month<br>
+                      • Entrepreneurs who want a media company around their name
+                    </div>
+                  </div>
+
+                  <div class="stat-card">
+                    <div class="stat-label">How It Works Day-to-Day</div>
+                    <div class="mini">
+                      You show up to create & lead.<br>
+                      Our team runs ops, content, funnels, acquisition and reporting.<br>
+                      Think of it as having a <span class="highlight-2">miniature
+                      in-house growth department</span> bolted onto your brand.
+                    </div>
+                  </div>
+
+                  <div class="stat-card">
+                    <div class="stat-label">Scaling Levers</div>
+                    <div class="mini">
+                      Each month we decide which lever to pull: more traffic, more
+                      conversion, higher AOV, more back-end offers or new channels.
+                      The machine keeps compounding.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Meta side -->
+          <div class="stat-stack">
+            <div class="stat-card">
+              <div class="stat-label">Slide 3 / 3</div>
+              <div class="stat-main">Elite: Full Business Takeover</div>
+              <div class="mini">
+                Only a handful of clients will ever be here. It’s built for brands
+                where an extra $50K–$100K/month justifies having an operator that
+                runs the whole ecosystem with them.Tier 3 is a transformation tier. At this stage, the goal is no longer growth or client acquisition  it is brand dominance and operational freedom. You become the face and visionary, and we become the engine behind everything: content, distribution, sales, product ecosystem, communities, funnels, daily operations, and strategic scaling.
+
+This tier constructs the full identity and infrastructure of a high-end personal brand. We redesign your brand positioning, messaging, offer architecture, product suite, and revenue model. We take over long-form content production, build unlimited short-form content pipelines, manage 8 to 12 sub-accounts, publish across every major platform, and engineer a multi-platform presence that makes you unavoidable in your niche.
+
+You record once. Everything else becomes automated.
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">When to Offer Tier 3</div>
+              <div class="mini">
+                After a client succeeds in Tier 2 and wants more: more platforms,
+                more content, more offers, more volume. Tier 3 is where you say:
+                <span class="highlight-3">“Let us run it with you.”</span>.The promise of Tier 3 is complete business takeover and full-scale revenue expansion. You get a team of specialists — editors, designers, strategists, appointment setters, funnel engineers, CRM techs, community managers, and closers — all operating under one unified system with one mission: scale your brand to $80K–$120K/month.
+
+We handle 100–200 targeted DMs per day, optimize your CRM, build your entire product ecosystem (mini-offers, core offers, high-ticket coaching), manage your sales team, redesign your funnels, and run your community as a conversion engine. You focus solely on delivering your program and recording content; we do everything else needed to grow your company.
+
+This tier doesn’t just build a brand — it builds a business that can scale, hire, diversify, and survive.
+This is for creators who want to become CEOs, not operators.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Highlight active nav link based on scroll
+    const sections = document.querySelectorAll(".slide");
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    function onScroll() {
+      let currentId = null;
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top <= 160 && rect.bottom >= 180) {
+          currentId = sec.id;
+        }
+      });
+      if (!currentId) return;
+      navLinks.forEach(link => {
+        link.classList.toggle(
+          "active",
+          link.getAttribute("href") === "#" + currentId
+        );
+      });
+    }
+
+    document.addEventListener("scroll", onScroll);
+  </script>
+</body>
+</html>
